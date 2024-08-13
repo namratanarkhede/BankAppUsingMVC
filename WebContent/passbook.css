@@ -1,0 +1,79 @@
+
+.passbook-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+.passbook-container h2 {
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.passbook-container form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.passbook-container button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.passbook-container button:hover {
+    background-color: #0056b3;
+}
+
+.passbook-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.passbook-container th, .passbook-container td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.passbook-container th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.passbook-container tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.passbook-container tr:hover {
+    background-color: #f1f1f1;
+}
+
+.passbook-container p {
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    margin-top: 20px;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #f5c6cb;
+    margin-top: 20px;
+    text-align: center;
+}
