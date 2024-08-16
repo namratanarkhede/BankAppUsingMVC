@@ -1,4 +1,6 @@
+/* passbook.css */
 
+/* Container for the passbook section */
 .passbook-container {
     background-color: #fff;
     padding: 30px;
@@ -9,6 +11,7 @@
     margin: 20px auto;
 }
 
+/* Header style inside passbook container */
 .passbook-container h2 {
     font-size: 24px;
     margin-top: 0;
@@ -16,11 +19,13 @@
     text-align: center;
 }
 
+/* Styling the form inside passbook container */
 .passbook-container form {
     text-align: center;
     margin-bottom: 20px;
 }
 
+/* Button style inside passbook container */
 .passbook-container button {
     background-color: #007bff;
     color: white;
@@ -36,6 +41,7 @@
     background-color: #0056b3;
 }
 
+/* Table styles inside passbook container */
 .passbook-container table {
     width: 100%;
     border-collapse: collapse;
@@ -61,6 +67,7 @@
     background-color: #f1f1f1;
 }
 
+/* Style for no transactions message */
 .passbook-container p {
     text-align: center;
     font-size: 16px;
@@ -68,6 +75,7 @@
     margin-top: 20px;
 }
 
+/* Error message style */
 .error-message {
     background-color: #f8d7da;
     color: #721c24;
@@ -76,4 +84,76 @@
     border: 1px solid #f5c6cb;
     margin-top: 20px;
     text-align: center;
+}
+
+/* Styling for the dropdown and date input fields */
+.passbook-container select, .passbook-container input[type="date"] {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.passbook-container select:focus, .passbook-container input[type="date"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Container for form elements */
+.form-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+/* Style labels */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Style dropdown and date inputs */
+select, input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Style submit button */
+button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Change button color on hover */
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Add spacing between elements */
+input[type="date"] {
+    display: inline-block;
+    width: calc(50% - 5px);
+    margin-right: 10px;
+}
+
+button[type="submit"] {
+    display: block;
+    margin-top: 10px;
+    width: 100%;
 }

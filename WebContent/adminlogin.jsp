@@ -10,7 +10,7 @@
 <body>
     <div class="login-container">
         <h2>Admin Login</h2>
-        <form action="AdminLoginServlet" method="post">
+        <form action="adminlogin" method="post">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>

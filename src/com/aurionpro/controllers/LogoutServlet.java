@@ -17,6 +17,7 @@ public class LogoutServlet extends HttpServlet {
         // Invalidate the current session
         HttpSession session = request.getSession(false);
         if (session != null) {
+            System.out.println("Invalid session");
             session.invalidate();
         }
 

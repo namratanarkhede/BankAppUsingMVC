@@ -1,6 +1,7 @@
 package com.aurionpro.controllers;
 
 import java.io.IOException;
+
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,20 +16,29 @@ import com.aurionpro.entity.CustomerPassbook;
 import com.aurionpro.entity.Transaction;
 import com.aurionpro.model.PassbookUtil;
 import com.aurionpro.model.TransactionUtil;
-@WebServlet("/ViewPassbookServlet")
+
+
+@WebServlet("/viewpassbook")
 public class ViewPassbookServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-
-
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("customer");
 
+        String transactionType = request.getParameter("transactionType");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+
         if (customer != null) {
-            List<Transaction> transactions = PassbookUtil.getTransactionsByCustomerID(customer.getCustomerID());
+            List<Transaction> transactions = PassbookUtil.getTransactionsByCustomerIDAndType(
+                customer.getCustomerID(),
+                transactionType,
+                startDate,
+                endDate
+            );
             request.setAttribute("transactions", transactions);
         } else {
             request.setAttribute("errorMessage", "User not logged in.");

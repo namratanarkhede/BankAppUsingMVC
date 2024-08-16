@@ -12,10 +12,7 @@ import javax.servlet.http.HttpSession;
 import com.aurionpro.entity.Customer;
 import com.aurionpro.model.CustomerUtil;
 
-/**
- * Servlet implementation class EditProfileServlet
- */
-@WebServlet("/EditProfileServlet")
+@WebServlet("/editprofile")
 public class EditProfileServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -51,6 +48,22 @@ public class EditProfileServlet extends HttpServlet {
 
         // Forward to the edit profile page with the message if no redirect
         request.setAttribute("message", message);
+        request.getRequestDispatcher("editProfile.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("customer");
+
+        if (customer == null) {
+            // Redirect to login page if the user is not logged in
+            response.sendRedirect("customerlogin.jsp");
+            return;
+        }
+
+        // Forward to the edit profile page
         request.getRequestDispatcher("editProfile.jsp").forward(request, response);
     }
 }

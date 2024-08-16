@@ -14,10 +14,10 @@
         <div class="side-panel">
             <h2>Admin Dashboard</h2>
             <ul>
-                <li><a href="addCustomer.jsp">Add Customer</a></li>
-                <li><a href="addAccount.jsp">Add Bank Account</a></li>
-               <li><a href="viewCustomer.jsp">View Customers</a></li>
-                <li><a href="viewTransaction.jsp">View Transactions</a></li>
+                <li><a href="addcustomer">Add Customer</a></li>
+                <li><a href="addaccount">Add Bank Account</a></li>
+               <li><a href="viewcustomer">View Customers</a></li>
+                <li><a href="viewtransaction">View Transactions</a></li>
             </ul>
             <form action="LogoutServlet"	 method="post">
                 <button type="submit" class="logout-button">Logout</button>

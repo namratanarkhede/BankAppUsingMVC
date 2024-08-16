@@ -38,10 +38,10 @@
         <div class="side-panel">
             <h2>Admin Dashboard</h2>
             <ul>
-                <li><a href="addCustomer.jsp">Add Customer</a></li>
-                <li><a href="addAccount.jsp">Add Bank Account</a></li>
-                <li><a href="viewCustomer.jsp">View Customers</a></li>
-                <li><a href="viewTransaction.jsp">View Transactions</a></li>
+               <li><a href="addcustomer">Add Customer</a></li>
+                <li><a href="addaccount">Add Bank Account</a></li>
+               <li><a href="viewcustomer">View Customers</a></li>
+                <li><a href="viewtransaction">View Transactions</a></li>
             </ul>
             <form action="LogoutServlet" method="post">
                 <button type="submit" class="logout-button">Logout</button>
@@ -51,7 +51,7 @@
         <!-- Main Content Area -->
         <div class="main-content">
             <h1>Add Bank Account</h1>
-            <form action="SearchCustomerServlet" method="post" class="form-container">
+            <form action="searchcustomer" method="post" class="form-container">
                 <div class="form-group">
                     <label for="customerId">Customer ID:</label>
                     <input type="text" id="customerId" name="customerId" required>
@@ -67,7 +67,7 @@
                 <p><strong>Email:</strong> ${customer.email}</p>
 
                 <!-- Form to generate account -->
-                <form action="GenerateAccountServlet" method="post" class="form-container">
+                <form action="generateaccount" method="post" class="form-container">
                     <input type="hidden" name="customerId" value="${customer.customerID}">
                     <button type="submit" class="generate-button">Generate Account Number</button>
                 </form>

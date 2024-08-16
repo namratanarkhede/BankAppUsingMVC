@@ -6,7 +6,18 @@ public class CustomerAccount {
     private String lastName;
     private String accountNumber;
     private double balance;
+    private String email;
+    private String password;
 
+    // Getter for email
+    public String getEmail() {
+        return email;
+    }
+
+    // Getter for password
+    public String getPassword() {
+        return password;
+    }
     // Getters and Setters
     public int getCustomerID() {
         return customerID;

@@ -34,10 +34,10 @@
                         <a class="nav-link" href="#about">About Me</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="adminlogin.jsp">Admin Login</a>
+                        <a class="nav-link" href="adminlogin">Admin Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="customerlogin.jsp">Customer Login</a>
+                        <a class="nav-link" href="customerlogin">Customer Login</a>
                     </li>
                     <li class="nav-item d-md-none">
                         <a class="nav-link" href="#contact">Contact Bank</a>

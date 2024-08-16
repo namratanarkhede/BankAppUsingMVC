@@ -1,70 +1,58 @@
-	package com.aurionpro.controllers;
-	
-	import java.io.IOException;
-	
-	import javax.servlet.ServletException;
-	import javax.servlet.annotation.WebServlet;
-	import javax.servlet.http.HttpServlet;
-	import javax.servlet.http.HttpServletRequest;
-	import javax.servlet.http.HttpServletResponse;
-	import javax.servlet.http.HttpSession;
-	
-	import com.aurionpro.entity.Customer;
-	import com.aurionpro.model.CustomerUtil;
-	
-	/**
-	 * Servlet implementation class CustomerLoginServlet
-	 */
-	@WebServlet("/CustomerLoginServlet")
-	public class CustomerLoginServlet extends HttpServlet {
+package com.aurionpro.controllers;
 
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-	    @Override
-	    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-	            throws ServletException, IOException {
-	        String email = request.getParameter("email");
-	        String password = request.getParameter("password");
+import com.aurionpro.entity.Customer;
+import com.aurionpro.model.CustomerUtil;
 
-	        // Validate email format
-	        if (!isValidEmail(email)) {
-	            request.setAttribute("errorMessage", "Invalid email format.");
-	            request.getRequestDispatcher("customerlogin.jsp").forward(request, response);
-	            return;
-	        }
+@WebServlet("/customerlogin")
+public class CustomerLoginServlet extends HttpServlet {
 
-	        // Validate password (e.g., at least 8 characters)
-	        if (!isValidPassword(password)) {
-	            request.setAttribute("errorMessage", "Password must be at least 8 characters long.");
-	            request.getRequestDispatcher("customerlogin.jsp").forward(request, response);
-	            return;
-	        }
+	@Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Forward the GET request to the login page
+        request.getRequestDispatcher("customerlogin.jsp").forward(request, response);
+    }
 
-	        // Validate customer credentials
-	        Customer customer = CustomerUtil.validateCustomer(email, password);
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
 
-	        if (customer != null) {
-	            HttpSession session = request.getSession();
-	            session.setAttribute("customer", customer);
-	            session.setAttribute("username", email);
+        // Check if email or password is null/empty
+        if (email == null || email.isEmpty()) {
+            request.setAttribute("error", "Email cannot be empty.");
+            request.getRequestDispatcher("customerlogin.jsp").forward(request, response);
+            return;
+        }
 
-	            // Store customer account number in session
-	            session.setAttribute("customerAccount", customer.getAccountNumber());
+        if (password == null || password.isEmpty()) {
+            request.setAttribute("error", "Password cannot be empty.");
+            request.getRequestDispatcher("customerlogin.jsp").forward(request, response);
+            return;
+        }
 
-	            response.sendRedirect("customerdashboard.jsp");
-	        } else {
-	            request.setAttribute("errorMessage", "Invalid email or password.");
-	            request.getRequestDispatcher("customerlogin.jsp").forward(request, response);
-	        }
-	    }
+        // Validate customer credentials
+        Customer customer = CustomerUtil.validateCustomer(email, password);
 
-	    private boolean isValidEmail(String email) {
-	        // Simple regex for email validation
-	        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-	        return email.matches(emailRegex);
-	    }
+        if (customer != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("customer", customer);
+            session.setAttribute("username", email);
+            session.setAttribute("customerAccount", customer.getAccountNumber());
 
-	    private boolean isValidPassword(String password) {
-	        // Password should be at least 8 characters long
-	        return password != null && password.length() >= 8;
-	    }
-	}
+            response.sendRedirect("customerdashboard");
+        } else {
+            request.setAttribute("error", "Invalid email or password.");
+            request.getRequestDispatcher("customerlogin.jsp").forward(request, response);
+        }
+    }
+}

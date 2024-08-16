@@ -41,53 +41,6 @@ public class TransactionUtil {
 	        return transactions;
 	    }
 
-	    public static boolean performTransfer(String senderAccount, String receiverAccount, double amount) throws SQLException {
-	        Connection connection = DBConnection.getConnection();
-	        try {
-	            connection.setAutoCommit(false);
-
-	            // Update sender account
-	            String updateSenderQuery = "UPDATE Accounts SET balance = balance - ? WHERE accountNumber = ?";
-	            try (PreparedStatement stmt = connection.prepareStatement(updateSenderQuery)) {
-	                stmt.setDouble(1, amount);
-	                stmt.setString(2, senderAccount);
-	                if (stmt.executeUpdate() != 1) {
-	                    connection.rollback();
-	                    return false;
-	                }
-	            }
-
-	            // Update receiver account
-	            String updateReceiverQuery = "UPDATE Accounts SET balance = balance + ? WHERE accountNumber = ?";
-	            try (PreparedStatement stmt = connection.prepareStatement(updateReceiverQuery)) {
-	                stmt.setDouble(1, amount);
-	                stmt.setString(2, receiverAccount);
-	                if (stmt.executeUpdate() != 1) {
-	                    connection.rollback();
-	                    return false;
-	                }
-	            }
-
-	            // Insert transaction record
-	            String insertTransactionQuery = "INSERT INTO Transactions (senderAccount, receiverAccount, transactionType, amount) VALUES (?, ?, 'transfer', ?)";
-	            try (PreparedStatement stmt = connection.prepareStatement(insertTransactionQuery)) {
-	                stmt.setString(1, senderAccount);
-	                stmt.setString(2, receiverAccount);
-	                stmt.setDouble(3, amount);
-	                stmt.executeUpdate();
-	            }
-
-	            connection.commit();
-	            return true;
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	            connection.rollback();
-	            throw e;
-	        } finally {
-	            connection.setAutoCommit(true);
-	        }
-	    }
-	    
 
 	    public static void addTransaction(String senderAccount, String receiverAccount, String transactionType, double amount) {
 	        Connection connection = DBConnection.getConnection();
@@ -110,8 +63,11 @@ public class TransactionUtil {
 	        try {
 	            connection.setAutoCommit(false);
 
+	            // Minimum balance required
+	            final double MIN_BALANCE = 5000.00;
+
 	            // Get the sender account number
-	            String getSenderAccountQuery = "SELECT accountNumber FROM Accounts WHERE customerID = ?";
+	            String getSenderAccountQuery = "SELECT accountNumber, balance FROM Accounts WHERE customerID = ?";
 	            PreparedStatement ps = connection.prepareStatement(getSenderAccountQuery);
 	            ps.setInt(1, customerID);
 	            ResultSet rs = ps.executeQuery();
@@ -119,21 +75,53 @@ public class TransactionUtil {
 	                return "Sender account not found.";
 	            }
 	            String senderAccount = rs.getString("accountNumber");
+	            double senderBalance = rs.getDouble("balance");
+
+	            // Check if the amount is greater than 0
+	            if (amount <= 0) {
+	                return "Amount must be greater than 0.";
+	            }
 
 	            // Handle transaction types
 	            if ("credit".equals(transactionType)) {
 	                updateBalance(connection, senderAccount, amount, "credit");
 	                addTransaction(connection, senderAccount, null, transactionType, amount);
+
 	            } else if ("debit".equals(transactionType)) {
+	                if (senderBalance - amount < MIN_BALANCE) {
+	                    return "Insufficient balance. Please add money to maintain a minimum balance of 5000.";
+	                }
+
 	                if (updateBalance(connection, senderAccount, amount, "debit")) {
 	                    addTransaction(connection, senderAccount, null, transactionType, amount);
 	                } else {
 	                    return "Insufficient balance.";
 	                }
+
 	            } else if ("transfer".equals(transactionType)) {
 	                if (receiverAccount == null || receiverAccount.isEmpty()) {
 	                    return "Receiver account number is required for transfer.";
 	                }
+
+	                // Ensure that receiverAccount is not the same as senderAccount
+	                if (senderAccount.equals(receiverAccount)) {
+	                    return "You cannot transfer money to your own account.";
+	                }
+
+	                // Check if the receiver account exists
+	                String checkReceiverQuery = "SELECT accountNumber FROM Accounts WHERE accountNumber = ?";
+	                PreparedStatement psReceiver = connection.prepareStatement(checkReceiverQuery);
+	                psReceiver.setString(1, receiverAccount);
+	                ResultSet rsReceiver = psReceiver.executeQuery();
+	                if (!rsReceiver.next()) {
+	                    return "Receiver account not found.";
+	                }
+
+	                // Check balance before transfer
+	                if (senderBalance - amount < MIN_BALANCE) {
+	                    return "Insufficient balance. Please add money to maintain a minimum balance of 5000.";
+	                }
+
 	                if (updateBalance(connection, senderAccount, amount, "debit")) {
 	                    updateBalance(connection, receiverAccount, amount, "credit");
 	                    addTransaction(connection, senderAccount, receiverAccount, transactionType, amount);
@@ -153,8 +141,36 @@ public class TransactionUtil {
 	            }
 	            e.printStackTrace();
 	            return "Transaction failed due to an error.";
+	        } finally {
+	            try {
+	                connection.setAutoCommit(true);
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
 	        }
 	    }
+
+	    
+	    
+	    public static double getCurrentBalance(String customerID) {
+	        double balance = 0.0;
+	        String query = "SELECT balance FROM Accounts WHERE customerID = ?";
+	        
+	        try (Connection connection = DBConnection.getConnection();
+	             PreparedStatement ps = connection.prepareStatement(query)) {
+	            
+	            ps.setString(1, customerID);
+	            ResultSet rs = ps.executeQuery();
+	            if (rs.next()) {
+	                balance = rs.getDouble("balance");
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        
+	        return balance;
+	    }
+
 
 	    private static boolean updateBalance(Connection connection, String accountNumber, double amount, String type) throws SQLException {
 	        String getBalanceQuery = "SELECT balance FROM Accounts WHERE accountNumber = ?";
@@ -219,6 +235,50 @@ public class TransactionUtil {
 	            e.printStackTrace();
 	        }
 
+	        return transactions;
+	    }
+	    
+	    
+	    
+	    
+	    public static List<Transaction> getFilteredTransactions(String transactionType, String sortOrder) {
+	        List<Transaction> transactions = new ArrayList<>();
+	        String query = "SELECT * FROM transactions WHERE 1=1";
+	        
+	        if (transactionType != null && !transactionType.isEmpty()) {
+	            query += " AND transactionType = ?";
+	        }
+	        
+	        if (sortOrder != null && !sortOrder.isEmpty()) {
+	            query += " ORDER BY transactionDate " + (sortOrder.equals("desc") ? "DESC" : "ASC");
+	        }
+	        
+	        try (Connection conn = DBConnection.getConnection();
+	             PreparedStatement stmt = conn.prepareStatement(query)) {
+	            
+	            int index = 1;
+	            if (transactionType != null && !transactionType.isEmpty()) {
+	                stmt.setString(index++, transactionType);
+	            }
+	            
+	            ResultSet rs = stmt.executeQuery();
+	            
+	            while (rs.next()) {
+	                Transaction transaction = new Transaction();
+	                transaction.setTransactionID(rs.getInt("transactionID"));
+	                transaction.setSenderAccount(rs.getString("senderAccount"));
+	                transaction.setReceiverAccount(rs.getString("receiverAccount"));
+	                transaction.setTransactionType(rs.getString("transactionType"));
+	                transaction.setAmount(rs.getDouble("amount"));
+	                transaction.setTransactionDate(rs.getDate("transactionDate"));
+	                
+	                transactions.add(transaction);
+	            }
+	            
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        
 	        return transactions;
 	    }
 }

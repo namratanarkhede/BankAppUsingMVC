@@ -16,9 +16,9 @@
         <div class="side-panel">
             <h2>Customer Dashboard</h2>
             <ul>
-                <li><a href="newTransaction.jsp">New Transaction</a></li>
-                <li><a href="viewPassbook.jsp">View Passbook</a></li>
-                <li><a href="editProfile.jsp">Edit Profile</a></li>
+                <li><a href="newtransaction">New Transaction</a></li>
+                <li><a href="viewpassbook">View Passbook</a></li>
+                <li><a href="editprofile">Edit Profile</a></li>
             </ul>
             <form action="LogoutServlet" method="post">
                 <button type="submit" class="logout-button">Logout</button>
@@ -28,10 +28,27 @@
         <!-- Main Content Area -->
         <div class="main-content">
             <div class="passbook-container">
-                <h2>View Passbook</h2>
-                <form action="ViewPassbookServlet" method="post">
-                    <button type="submit">Show Passbook</button>
-                </form>
+                <div class="form-container">
+                    <form action="viewpassbook" method="get">
+                        <label for="transactionType">Select Transaction Type:</label>
+                        <select id="transactionType" name="transactionType" onchange="this.form.submit()">
+                            <option value="">All</option>
+                            <option value="credit" <c:if test="${param.transactionType == 'credit'}">selected</c:if>>Credit</option>
+                            <option value="debit" <c:if test="${param.transactionType == 'debit'}">selected</c:if>>Debit</option>
+                            <option value="transfer" <c:if test="${param.transactionType == 'transfer'}">selected</c:if>>Transfer</option>
+                        </select>
+
+                        <br><br>
+
+                        <label for="startDate">Start Date:</label>
+                        <input type="date" id="startDate" name="startDate" value="<c:out value="${param.startDate}" />">
+
+                        <label for="endDate">End Date:</label>
+                        <input type="date" id="endDate" name="endDate" value="<c:out value="${param.endDate}" />">
+
+                        <button type="submit">Filter</button>
+                    </form>
+                </div>
 
                 <c:if test="${not empty transactions}">
                     <table>

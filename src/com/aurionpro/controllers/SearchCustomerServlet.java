@@ -14,7 +14,7 @@ import com.aurionpro.model.CustomerUtil;
 /**
  * Servlet implementation class SearchCustomerServlet
  */
-@WebServlet("/SearchCustomerServlet")
+@WebServlet("/searchcustomer")
 public class SearchCustomerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

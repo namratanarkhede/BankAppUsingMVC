@@ -13,24 +13,27 @@ import com.aurionpro.model.AccountUtil;
 /**
  * Servlet implementation class GenerateAccountServlet
  */
-@WebServlet("/GenerateAccountServlet")
+@WebServlet("/generateaccount")
 public class GenerateAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int customerId = Integer.parseInt(request.getParameter("customerId"));
+	
+	 @Override
+	    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	            throws ServletException, IOException {
+	        int customerId = Integer.parseInt(request.getParameter("customerId"));
 
-        try {
-            boolean success = AccountUtil.createAccountForCustomer(customerId);
-            if (success) {
-                request.setAttribute("successMessage", "Account created successfully.");
-            } else {
-                request.setAttribute("errorMessage", "Error creating account.");
-            }
-        } catch (Exception e) {
-            request.setAttribute("errorMessage", "Error creating account: " + e.getMessage());
-        }
+	        try {
+	            boolean success = AccountUtil.createAccountForCustomer(customerId);
+	            if (success) {
+	                request.setAttribute("successMessage", "Account created successfully.");
+	            } else {
+	                request.setAttribute("errorMessage", "Error creating account.");
+	            }
+	        } catch (Exception e) {
+	            request.setAttribute("errorMessage", "Error creating account: " + e.getMessage());
+	        }
 
-        request.getRequestDispatcher("addAccount.jsp").forward(request, response);
-    }
+	        // Forward to the JSP page
+	        request.getRequestDispatcher("addAccount.jsp").forward(request, response);
+	    }
 }
