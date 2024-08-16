@@ -46,7 +46,6 @@ public class EditProfileServlet extends HttpServlet {
             message = "Current password is incorrect.";
         }
 
-        // Forward to the edit profile page with the message if no redirect
         request.setAttribute("message", message);
         request.getRequestDispatcher("editProfile.jsp").forward(request, response);
     }
@@ -58,12 +57,10 @@ public class EditProfileServlet extends HttpServlet {
         Customer customer = (Customer) session.getAttribute("customer");
 
         if (customer == null) {
-            // Redirect to login page if the user is not logged in
             response.sendRedirect("customerlogin.jsp");
             return;
         }
 
-        // Forward to the edit profile page
         request.getRequestDispatcher("editProfile.jsp").forward(request, response);
     }
 }

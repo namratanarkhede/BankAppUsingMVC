@@ -17,7 +17,6 @@ public class CustomerLoginServlet extends HttpServlet {
 	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Forward the GET request to the login page
         request.getRequestDispatcher("customerlogin.jsp").forward(request, response);
     }
 
@@ -27,7 +26,6 @@ public class CustomerLoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Check if email or password is null/empty
         if (email == null || email.isEmpty()) {
             request.setAttribute("error", "Email cannot be empty.");
             request.getRequestDispatcher("customerlogin.jsp").forward(request, response);
@@ -40,7 +38,6 @@ public class CustomerLoginServlet extends HttpServlet {
             return;
         }
 
-        // Validate customer credentials
         Customer customer = CustomerUtil.validateCustomer(email, password);
 
         if (customer != null) {

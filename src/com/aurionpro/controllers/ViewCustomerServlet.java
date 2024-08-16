@@ -19,7 +19,6 @@ public class ViewCustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Redirect to the same form page or handle GET requests
         request.getRequestDispatcher("viewCustomer.jsp").forward(request, response);
     }
 

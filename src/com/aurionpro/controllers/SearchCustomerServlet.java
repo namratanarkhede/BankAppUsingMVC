@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.aurionpro.entity.Customer;
 import com.aurionpro.model.CustomerUtil;
 
-/**
- * Servlet implementation class SearchCustomerServlet
- */
+
 @WebServlet("/searchcustomer")
 public class SearchCustomerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -30,7 +28,6 @@ public class SearchCustomerServlet extends HttpServlet {
             request.setAttribute("errorMessage", "Customer not found.");
         }
 
-        // Forward to the JSP page
         request.getRequestDispatcher("addAccount.jsp").forward(request, response);
     }
 }

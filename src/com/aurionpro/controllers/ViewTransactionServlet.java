@@ -36,7 +36,6 @@ public class ViewTransactionServlet extends HttpServlet {
 	    @Override
 	    protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
-	        // Handle POST requests
 	        String transactionType = request.getParameter("transactionType");
 	        String sortOrder = request.getParameter("sortOrder");
 	        List<Transaction> transactions = TransactionUtil.getFilteredTransactions(transactionType, sortOrder);

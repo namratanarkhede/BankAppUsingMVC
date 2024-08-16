@@ -42,7 +42,6 @@ public class AddAccountServlet extends HttpServlet {
             return;
         }
 
-        // Fetch customer details
         Customer customer = CustomerUtil.getCustomerById(customerId);
 
         if (customer != null) {

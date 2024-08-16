@@ -11,9 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import com.aurionpro.entity.Customer;
 
-/**
- * Servlet implementation class CustomerDashboardServlet
- */
 @WebServlet("/customerdashboard")
 public class CustomerDashboardServlet extends HttpServlet {
 
@@ -34,6 +31,6 @@ public class CustomerDashboardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);  // Handle POST requests similarly by forwarding to doGet
+        doGet(request, response);  
     }
 }

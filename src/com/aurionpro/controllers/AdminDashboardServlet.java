@@ -15,13 +15,11 @@ public class AdminDashboardServlet extends HttpServlet {
 	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false); // Retrieve the existing session, do not create a new one
+        HttpSession session = request.getSession(false); 
         
         if (session != null && session.getAttribute("admin") != null) {
-            // Admin is logged in, forward to admin dashboard
             request.getRequestDispatcher("admindashboard.jsp").forward(request, response);
         } else {
-            // Admin is not logged in, redirect to admin login page
             response.sendRedirect("adminlogin.jsp");
         }
     }

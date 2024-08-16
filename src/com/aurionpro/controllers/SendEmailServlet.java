@@ -25,33 +25,28 @@ public class SendEmailServlet extends HttpServlet {
                       "Best regards,\n" +
                       "Bank Admin";
 
-        // Set up the mail server properties
         Properties properties = new Properties();
-        properties.put("mail.smtp.host", "smtp.gmail.com"); // Replace with your SMTP server
-        properties.put("mail.smtp.port", "587"); // Replace with your SMTP port
+        properties.put("mail.smtp.host", "smtp.gmail.com"); 
+        properties.put("mail.smtp.port", "587"); 
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
 
-        // Authenticate the mail session
         Session mailSession = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("20102106.namratanarkhede@gmail.com", "Namrata10@"); // Replace with your email and password
+                return new PasswordAuthentication("email", "password"); // Replace with your email and password
             }
         });
 
         try {
-            // Create a new email message
             MimeMessage message = new MimeMessage(mailSession);
-            message.setFrom(new InternetAddress("20102106.namratanarkhede@gmail.com")); // Replace with your email
+            message.setFrom(new InternetAddress("email")); // Replace with your email
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
             message.setSubject(subject);
             message.setText(body);
 
-            // Send the email
             Transport.send(message);
 
-            // Redirect to a success page or message
             response.sendRedirect("viewCustomer.jsp?success=Email sent successfully");
         } catch (MessagingException e) {
             e.printStackTrace();

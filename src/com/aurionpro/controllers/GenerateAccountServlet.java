@@ -10,9 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.aurionpro.model.AccountUtil;
 
-/**
- * Servlet implementation class GenerateAccountServlet
- */
+
 @WebServlet("/generateaccount")
 public class GenerateAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -33,7 +31,6 @@ public class GenerateAccountServlet extends HttpServlet {
 	            request.setAttribute("errorMessage", "Error creating account: " + e.getMessage());
 	        }
 
-	        // Forward to the JSP page
 	        request.getRequestDispatcher("addAccount.jsp").forward(request, response);
 	    }
 }
