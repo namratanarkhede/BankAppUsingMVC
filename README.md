@@ -56,7 +56,7 @@ To run this application on your local machine:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/bank-application.git
+   git clone https://github.com/namratanarkhede/BankAppUsingMVC.git
 2. **Set up the database:**
    - Install MySQL, create a new database named `bankdbfinal`. You can do this by logging into the MySQL command line or using a GUI tool like MySQL Workbench.
    - Run the provided SQL scripts to create the required tables (customers, accounts, transactions, etc.).
